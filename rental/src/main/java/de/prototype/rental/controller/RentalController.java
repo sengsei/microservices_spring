@@ -22,7 +22,7 @@ public class RentalController {
         return rentalService.findAll();
     }
 
-    @PostMapping("rentals")
+    @PostMapping("/api/rentals")
     public Mono<ResponseEntity<RentalDto>> save(@RequestBody Mono<RentalDto> rentalDtoMono) {
         return rentalService.save(rentalDtoMono).map(ResponseEntity::ok);
     }
