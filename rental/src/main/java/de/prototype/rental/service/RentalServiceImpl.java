@@ -1,14 +1,22 @@
 package de.prototype.rental.service;
 
 import de.prototype.rental.dto.RentalDto;
+import de.prototype.rental.mapper.RentalMapper;
+import de.prototype.rental.repository.RentalRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@AllArgsConstructor
+@Service
 public class RentalServiceImpl implements RentalService {
+
+    private RentalRepository rentalRepository;
 
     @Override
     public Flux<RentalDto> findAll() {
-        return null;
+        return rentalRepository.findAll().map(RentalMapper::toDto);
     }
 
     @Override
