@@ -1,6 +1,7 @@
 package de.prototype.rental;
 
 
+import de.prototype.rental.controller.RentalController;
 import de.prototype.rental.model.Rental;
 import de.prototype.rental.repository.RentalRepository;
 import de.prototype.rental.service.RentalServiceImpl;
@@ -16,12 +17,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 
 @ExtendWith(SpringExtension.class)
-@WebFluxTest(controllers = RentalApplication.class)
+@WebFluxTest(controllers = RentalController.class)
 @Import(RentalServiceImpl.class)
 class RentalApplicationTests {
-
-	@MockBean
-	RentalServiceImpl service;
 
 	@MockBean
 	RentalRepository repository;
