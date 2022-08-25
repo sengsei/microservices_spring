@@ -1,10 +1,16 @@
 package de.prototype.rental.service;
 
 import de.prototype.rental.dto.RentalDto;
+import de.prototype.rental.mapper.RentalMapper;
+import de.prototype.rental.repository.RentalRepository;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class RentalServiceImpl implements RentalService {
+
+    private RentalRepository rentalRepository;
 
     @Override
     public Flux<RentalDto> findAll() {
@@ -18,7 +24,8 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Mono<RentalDto> save(Mono<RentalDto> rentalDtoMono) {
-        return null;
+        return rentalDtoMono.map(RentalMapper::toEntity)
+                .flatMap(rentalRepository::save).map(RentalMapper::toDto);
     }
 
     @Override
