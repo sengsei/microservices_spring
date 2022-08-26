@@ -21,7 +21,7 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Mono<RentalDto> findById(String id) {
-        return null;
+        return rentalRepository.findById(id).map(RentalMapper::toDto);
     }
 
     @Override

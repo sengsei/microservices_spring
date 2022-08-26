@@ -27,53 +27,75 @@ import static org.mockito.Mockito.times;
 @Import(RentalServiceImpl.class)
 class RentalApplicationTests {
 
-	@MockBean
-	RentalRepository repository;
+    @MockBean
+    RentalRepository repository;
 
-	@Autowired
-	private WebTestClient client;
+    @Autowired
+    private WebTestClient client;
 
-	@Test
-	void findAllRentals() {
-		Rental rental1 = new Rental();
-		rental1.setName("Trekking Bike");
-		rental1.setDescription("Reifen abgefahren");
+    @Test
+    void findAllRentals() {
+        Rental rental1 = new Rental();
+        rental1.setName("Trekking Bike");
+        rental1.setDescription("Reifen abgefahren");
 
-		Rental rental2 = new Rental();
-		rental2.setName("Rennrad");
-		rental2.setDescription("keine Luftpumpe dabei");
+        Rental rental2 = new Rental();
+        rental2.setName("Rennrad");
+        rental2.setDescription("keine Luftpumpe dabei");
 
-		Mockito.when(repository.findAll()).thenReturn(Flux.just(rental1, rental2));
+        Mockito.when(repository.findAll()).thenReturn(Flux.just(rental1, rental2));
+
+        client.get()
+                .uri("/api/rentals")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Rental.class);
+
+        Mockito.verify(repository, times(1)).findAll();
+
+    }
+
+    @Test
+    void shouldFindRentalById() {
+        Rental rental1 = new Rental();
+        rental1.setId("42");
+        rental1.setName("Trekking Bike");
+        rental1.setDescription("Reifen abgefahren");
+
+        Mockito.when(repository.findById("42")).thenReturn(Mono.just(rental1));
 
 		client.get()
-				.uri("/api/rentals")
+				.uri("/api/rentals/{id}","42")
 				.exchange()
 				.expectStatus().isOk()
-				.expectBodyList(Rental.class);
+				.expectBody()
+				.jsonPath("$.name").isEqualTo("Trekking Bike")
+				.jsonPath("$.id").isEqualTo("42")
+				.jsonPath("$.description").isEqualTo("Reifen abgefahren");
 
-		Mockito.verify(repository, times(1)).findAll();
+		Mockito.verify(repository, times(1)).findById("42");
 
-	}
 
-	@Test
-	void shouldCreateOneRental(){
-		Rental rental1 = new Rental();
-		rental1.setName("Trekking Bike");
-		rental1.setDescription("Reifen abgefahren");
+    }
 
-		Mockito.when(repository.save(rental1)).thenReturn(Mono.just(rental1));
+    @Test
+    void shouldCreateOneRental() {
+        Rental rental1 = new Rental();
+        rental1.setName("Trekking Bike");
+        rental1.setDescription("Reifen abgefahren");
 
-		client.post()
-				.uri("/api/rentals")
-				.contentType(MediaType.APPLICATION_JSON)
-				.body(BodyInserters.fromValue(rental1))
-				.exchange()
-				.expectStatus().isOk();
+        Mockito.when(repository.save(rental1)).thenReturn(Mono.just(rental1));
 
-		Mockito.verify(repository, times(1)).save(rental1);
+        client.post()
+                .uri("/api/rentals")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(rental1))
+                .exchange()
+                .expectStatus().isOk();
 
-	}
+        Mockito.verify(repository, times(1)).save(rental1);
 
+    }
 
 
 }
