@@ -21,6 +21,11 @@ public class RentalController {
         return rentalService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Mono<RentalDto> findById(@PathVariable String id){
+        return rentalService.findById(id);
+    }
+
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<ResponseEntity<RentalDto>> save(@RequestBody Mono<RentalDto> rentalDtoMono) {
