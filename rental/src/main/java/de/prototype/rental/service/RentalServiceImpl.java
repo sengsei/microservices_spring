@@ -26,7 +26,7 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Mono<RentalDto> save(Mono<RentalDto> rentalDtoMono) {
-        return null;
+        return rentalDtoMono.map(RentalMapper::toEntity).flatMap(rentalRepository::save).map(RentalMapper::toDto);
     }
 
     @Override
