@@ -97,5 +97,23 @@ class RentalApplicationTests {
 
     }
 
+    @Test
+    void shouldChangeExistingRental() {
+        Rental rental1 = new Rental();
+        rental1.setId("42");
+        rental1.setName("Trekking Bike");
+        rental1.setDescription("Reifen abgefahren");
+
+
+
+        client.put()
+                .uri("/api/rentals/{id}", "42")
+                .body(BodyInserters.fromValue(rental1))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Rental.class).isEqualTo(rental1);
+
+    }
+
 
 }

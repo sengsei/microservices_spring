@@ -31,4 +31,11 @@ public class RentalController {
     public Mono<ResponseEntity<RentalDto>> save(@RequestBody Mono<RentalDto> rentalDtoMono) {
         return rentalService.save(rentalDtoMono).map(ResponseEntity::ok);
     }
+
+    @PutMapping("/{id}")
+    public Mono<ResponseEntity<RentalDto>> update(@PathVariable("id") String id, @RequestBody Mono<RentalDto> heroDtoMono) {
+        return rentalService.update(id, heroDtoMono)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    }
 }
