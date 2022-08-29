@@ -31,7 +31,11 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Mono<RentalDto> update(String id, Mono<RentalDto> rentalDtoMono) {
-        return null;
+        return rentalRepository.findById(id)
+                .flatMap(rental -> rentalDtoMono.map(RentalMapper::toEntity))
+                .doOnNext(rental -> rental.setId(id))
+                .flatMap(rentalRepository::save)
+                .map(RentalMapper::toDto);
     }
 
     @Override
