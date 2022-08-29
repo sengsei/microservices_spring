@@ -96,5 +96,18 @@ class RentalApplicationTests {
 
     }
 
+    @Test
+    void shouldDeleteRentalById() {
+        Rental rental = repository.save(new Rental("42", "Trekking Bike", "kaputt")).block();
+
+        assert rental != null;
+        repository.save(rental).block();
+
+        client.delete()
+                .uri("/api/rentals/{id}", Collections.singletonMap("id", rental.getId()))
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
 
 }

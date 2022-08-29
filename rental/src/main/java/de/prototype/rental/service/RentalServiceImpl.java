@@ -40,6 +40,6 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Mono<Void> delete(String id) {
-        return null;
+        return rentalRepository.deleteById(id);
     }
 }
