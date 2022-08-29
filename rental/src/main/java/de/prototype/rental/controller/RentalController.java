@@ -38,4 +38,11 @@ public class RentalController {
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
+
+    @DeleteMapping("/{id}")
+    public Mono<ResponseEntity<Object>> delete(@PathVariable("id") String id){
+        return rentalService.delete(id)
+                .map(rental -> ResponseEntity.noContent().build())
+                .defaultIfEmpty(ResponseEntity.noContent().build());
+    }
 }
