@@ -5,8 +5,8 @@ import de.prototype.rental.model.Rental;
 
 public class RentalMapper {
 
-    public static RentalDto toDto(Rental rental){
-        return new RentalDto(rental.getId(), rental.getName(), rental.getDescription());
+    public static RentalDto toDto(Rental rental) {
+        return new RentalDto(rental.getRentalId(), rental.getName(), rental.getDescription());
     }
 
     public static Rental toEntity(RentalDto rentalDto) {

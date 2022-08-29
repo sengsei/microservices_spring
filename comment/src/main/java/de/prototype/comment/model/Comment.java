@@ -1,4 +1,4 @@
-package de.prototype.rental.model;
+package de.prototype.comment.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,11 +11,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Document("rentals")
-public class Rental {
+@Document("comments")
+public class Comment {
 
     @Id
+    private String commentId;
     private String rentalId;
-    private String name;
-    private String description;
+    private String username;
+    private String subject;
+    private String content;
 }

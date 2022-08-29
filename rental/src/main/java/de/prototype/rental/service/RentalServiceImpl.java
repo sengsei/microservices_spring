@@ -33,7 +33,7 @@ public class RentalServiceImpl implements RentalService {
     public Mono<RentalDto> update(String id, Mono<RentalDto> rentalDtoMono) {
         return rentalRepository.findById(id)
                 .flatMap(rental -> rentalDtoMono.map(RentalMapper::toEntity))
-                .doOnNext(rental -> rental.setId(id))
+                .doOnNext(rental -> rental.setRentalId(id))
                 .flatMap(rentalRepository::save)
                 .map(RentalMapper::toDto);
     }

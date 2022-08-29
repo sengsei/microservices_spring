@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 
 
@@ -34,7 +35,7 @@ class RentalApplicationTests {
     @Test
     void shouldFindRentalById() {
         Rental rental = new Rental();
-        rental.setId("42");
+        rental.setRentalId("42");
         rental.setName("Trekking Bike");
         rental.setDescription("Reifen abgefahren");
 
@@ -72,19 +73,19 @@ class RentalApplicationTests {
     @Test
     void shouldChangeExistingRental() {
         Rental rental1 = new Rental();
-        rental1.setId("42");
+        rental1.setRentalId("42");
         rental1.setName("Trekking Bike");
         rental1.setDescription("Reifen abgefahren");
 
         repository.save(rental1).block();
 
         Rental rental2 = new Rental();
-        rental2.setId("42");
+        rental2.setRentalId("42");
         rental2.setName("Trekking Bike");
         rental2.setDescription("Reifen in Ordnung");
 
         client.put()
-                .uri("/api/rentals/{id}", Collections.singletonMap("id", rental1.getId()))
+                .uri("/api/rentals/{id}", Collections.singletonMap("id", rental1.getRentalId()))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(rental2), Rental.class)
@@ -104,7 +105,7 @@ class RentalApplicationTests {
         repository.save(rental).block();
 
         client.delete()
-                .uri("/api/rentals/{id}", Collections.singletonMap("id", rental.getId()))
+                .uri("/api/rentals/{id}", Collections.singletonMap("id", rental.getRentalId()))
                 .exchange()
                 .expectStatus().isNoContent();
     }

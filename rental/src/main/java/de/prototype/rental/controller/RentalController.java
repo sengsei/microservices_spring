@@ -22,7 +22,7 @@ public class RentalController {
     }
 
     @GetMapping("/{id}")
-    public Mono<RentalDto> findById(@PathVariable String id){
+    public Mono<RentalDto> findById(@PathVariable String id) {
         return rentalService.findById(id);
     }
 
@@ -40,7 +40,7 @@ public class RentalController {
     }
 
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Object>> delete(@PathVariable("id") String id){
+    public Mono<ResponseEntity<Object>> delete(@PathVariable("id") String id) {
         return rentalService.delete(id)
                 .map(rental -> ResponseEntity.noContent().build())
                 .defaultIfEmpty(ResponseEntity.noContent().build());
