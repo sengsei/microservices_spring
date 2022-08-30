@@ -7,10 +7,10 @@ import de.prototype.rental.model.Rental;
 public class RentalMapper {
 
     public static RentalDto toDto(Rental rental){
-        return new RentalDto(rental.getRentalId(), rental.getName(), rental.getDescription());
+        return new RentalDto(rental.getId(), rental.getRentalId(), rental.getName(), rental.getDescription());
     }
 
     public static Rental toEntity(RentalDto rentalDto) {
-        return new Rental(null,rentalDto.getRentalId(), rentalDto.getName(), rentalDto.getDescription());
+        return new Rental(rentalDto.getId(), rentalDto.getRentalId(), rentalDto.getName(), rentalDto.getDescription());
     }
 }

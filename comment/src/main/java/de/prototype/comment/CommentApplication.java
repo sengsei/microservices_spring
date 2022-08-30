@@ -1,13 +1,13 @@
-package de.prototype.rental;
+package de.prototype.comment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RentalApplication {
+public class CommentApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RentalApplication.class, args);
+        SpringApplication.run(CommentApplication.class, args);
     }
 
 }
