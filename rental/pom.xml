@@ -51,6 +51,12 @@
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-resolver-dns-native-macos</artifactId>
+			<version>4.1.80.Final</version>
+			<classifier>osx-aarch_64</classifier>
+		</dependency>
 	</dependencies>
 
 	<build>

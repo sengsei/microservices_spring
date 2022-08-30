@@ -21,9 +21,9 @@ public class RentalController {
         return rentalService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Mono<RentalDto> findById(@PathVariable String id){
-        return rentalService.findById(id);
+    @GetMapping("/{rentalId}")
+    public Mono<RentalDto> findById(@PathVariable int rentalId){
+        return rentalService.findById(rentalId);
     }
 
     @PostMapping()
@@ -32,16 +32,16 @@ public class RentalController {
         return rentalService.save(rentalDtoMono).map(ResponseEntity::ok);
     }
 
-    @PutMapping("/{id}")
-    public Mono<ResponseEntity<RentalDto>> update(@PathVariable("id") String id, @RequestBody Mono<RentalDto> heroDtoMono) {
-        return rentalService.update(id, heroDtoMono)
+    @PutMapping("/{rentalId}")
+    public Mono<ResponseEntity<RentalDto>> update(@PathVariable("rentalId") int rentalId, @RequestBody Mono<RentalDto> heroDtoMono) {
+        return rentalService.update(rentalId, heroDtoMono)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Object>> delete(@PathVariable("id") String id){
-        return rentalService.delete(id)
+    @DeleteMapping("/{rentalId}")
+    public Mono<ResponseEntity<Object>> delete(@PathVariable("rentalId") int rentalId){
+        return rentalService.delete(rentalId)
                 .map(rental -> ResponseEntity.noContent().build())
                 .defaultIfEmpty(ResponseEntity.noContent().build());
     }

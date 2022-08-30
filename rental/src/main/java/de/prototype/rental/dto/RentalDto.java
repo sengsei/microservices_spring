@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class RentalDto {
 
-    private String id;
+    private int rentalId;
     private String name;
     private String description;
 }

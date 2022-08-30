@@ -3,6 +3,7 @@ package de.prototype.rental;
 
 import de.prototype.rental.model.Rental;
 import de.prototype.rental.repository.RentalRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -21,40 +24,50 @@ class RentalApplicationTests {
     @Autowired
     private WebTestClient client;
 
-    @Test
-    void findAllRentals() {
-        client.get()
-                .uri("/api/rentals")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(Rental.class);
-
+    @BeforeEach
+    void cleanDb() {
+        repository.deleteAll().block();
     }
 
     @Test
-    void shouldFindRentalById() {
-        Rental rental = new Rental();
-        rental.setId("42");
-        rental.setName("Trekking Bike");
-        rental.setDescription("Reifen abgefahren");
+    void findAllRentals() {
+        Rental rental = new Rental("", 1, "Trekking", "keine Luft auf Reifen");
 
         repository.save(rental).block();
 
         client.get()
-                .uri("/api/rentals/{id}", "42")
+                .uri("/api/rentals")
+                .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
+                .expectBodyList(Rental.class);
+
+        assertEquals(1, (long)repository.count().block());
+    }
+
+    @Test
+    void shouldFindRentalById() {
+        Rental rental = new Rental("", 1, "Trekking", "keine Luft auf Reifen");
+
+        repository.save(rental).block();
+
+        client.get()
+                .uri("/api/rentals/{rentalId}", 1)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBody()
-                .jsonPath("$.name").isEqualTo("Trekking Bike")
-                .jsonPath("$.id").isEqualTo("42")
-                .jsonPath("$.description").isEqualTo("Reifen abgefahren");
+                .jsonPath("$.rentalId").isEqualTo(1)
+                .jsonPath("$.name").isEqualTo("Trekking")
+                .jsonPath("$.description").isEqualTo("keine Luft auf Reifen");
     }
 
     @Test
     void shouldCreateOneRental() {
-        Rental rental = new Rental();
-        rental.setName("Trekking Bike");
-        rental.setDescription("Reifen abgefahren");
+        Rental rental = new Rental("", 1, "Trekking", "keine Luft auf Reifen");
+
+        repository.save(rental);
 
         client.post()
                 .uri("/api/rentals")
@@ -63,28 +76,22 @@ class RentalApplicationTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("$.id").isNotEmpty()
-                .jsonPath("$.name").isEqualTo("Trekking Bike")
-                .jsonPath("$.description").isEqualTo("Reifen abgefahren");
+                .jsonPath("$.rentalId").isEqualTo(1)
+                .jsonPath("$.name").isEqualTo("Trekking")
+                .jsonPath("$.description").isEqualTo("keine Luft auf Reifen");
 
     }
 
     @Test
     void shouldChangeExistingRental() {
-        Rental rental1 = new Rental();
-        rental1.setId("42");
-        rental1.setName("Trekking Bike");
-        rental1.setDescription("Reifen abgefahren");
+        Rental rental1 = new Rental("", 1, "Trekking Bike", "Reifen abgefahren");
 
         repository.save(rental1).block();
 
-        Rental rental2 = new Rental();
-        rental2.setId("42");
-        rental2.setName("Trekking Bike");
-        rental2.setDescription("Reifen in Ordnung");
+        Rental rental2 = new Rental("", 1, "Trekking Bike", "Reifen in Ordnung");
 
         client.put()
-                .uri("/api/rentals/{id}", Collections.singletonMap("id", rental1.getId()))
+                .uri("/api/rentals/{rentalId}", Collections.singletonMap("rentalId", rental1.getRentalId()))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(rental2), Rental.class)
@@ -93,18 +100,17 @@ class RentalApplicationTests {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBody()
                 .jsonPath("$.description").isEqualTo("Reifen in Ordnung");
-
     }
 
     @Test
     void shouldDeleteRentalById() {
-        Rental rental = repository.save(new Rental("42", "Trekking Bike", "kaputt")).block();
+        Rental rental = repository.save(new Rental("", 1, "Trekking Bike", "kaputt")).block();
 
         assert rental != null;
         repository.save(rental).block();
 
         client.delete()
-                .uri("/api/rentals/{id}", Collections.singletonMap("id", rental.getId()))
+                .uri("/api/rentals/{rentalId}", Collections.singletonMap("rentalId", rental.getRentalId()))
                 .exchange()
                 .expectStatus().isNoContent();
     }

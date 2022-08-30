@@ -16,6 +16,8 @@ public class Rental {
 
     @Id
     private String id;
+
+    private int rentalId;
     private String name;
     private String description;
 }
