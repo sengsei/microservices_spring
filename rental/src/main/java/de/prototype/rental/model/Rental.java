@@ -15,7 +15,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Rental {
 
     @Id
-    private String rentalId;
+    private String id;
+
+    private int rentalId;
     private String name;
     private String description;
 }
