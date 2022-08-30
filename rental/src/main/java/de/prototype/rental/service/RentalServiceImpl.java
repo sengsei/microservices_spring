@@ -20,8 +20,8 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public Mono<RentalDto> findById(String id) {
-        return rentalRepository.findById(id).map(RentalMapper::toDto);
+    public Mono<RentalDto> findById(int rentalId) {
+        return rentalRepository.findByRentalId(rentalId).map(RentalMapper::toDto);
     }
 
     @Override
@@ -30,16 +30,16 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public Mono<RentalDto> update(String id, Mono<RentalDto> rentalDtoMono) {
-        return rentalRepository.findById(id)
+    public Mono<RentalDto> update(int rentalId, Mono<RentalDto> rentalDtoMono) {
+        return rentalRepository.findByRentalId(rentalId)
                 .flatMap(rental -> rentalDtoMono.map(RentalMapper::toEntity))
-                .doOnNext(rental -> rental.setId(id))
+                .doOnNext(rental -> rental.setRentalId(rentalId))
                 .flatMap(rentalRepository::save)
                 .map(RentalMapper::toDto);
     }
 
     @Override
-    public Mono<Void> delete(String id) {
-        return rentalRepository.deleteById(id);
+    public Mono<Void> delete(int rentalId) {
+        return rentalRepository.deleteByRentalId(rentalId);
     }
 }

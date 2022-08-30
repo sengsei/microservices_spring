@@ -6,8 +6,8 @@ import reactor.core.publisher.Mono;
 
 public interface RentalService {
     Flux<RentalDto> findAll();
-    Mono<RentalDto> findById(String id);
+    Mono<RentalDto> findById(int rentalId);
     Mono<RentalDto> save(Mono<RentalDto> rentalDtoMono);
-    Mono<RentalDto> update(String id, Mono<RentalDto> rentalDtoMono);
-    Mono<Void> delete(String id);
+    Mono<RentalDto> update(int rentalId, Mono<RentalDto> rentalDtoMono);
+    Mono<Void> delete(int rentalId);
 }
