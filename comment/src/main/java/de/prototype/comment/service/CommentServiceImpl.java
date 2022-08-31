@@ -16,7 +16,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Flux<CommentDto> findAllCommentsByRentalId(int rentalId) {
-        return commentRepository.findByRentalId(rentalId).map(CommentMapper::toDto);
+        return commentRepository.findCommentsByRentalId(rentalId).map(CommentMapper::toDto);
     }
 
     @Override
@@ -25,12 +25,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Mono<CommentDto> update(int rentalId, Mono<CommentDto> commentDtoMono) {
-        return null;
-    }
-
-    @Override
     public Mono<Void> delete(int rentalId) {
-        return null;
+        return commentRepository.deleteAll(commentRepository.findCommentsByRentalId(rentalId));
     }
 }

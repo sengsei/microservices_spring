@@ -67,7 +67,7 @@ class RentalApplicationTests {
     void shouldCreateOneRental() {
         Rental rental = new Rental("", 1, "Trekking", "keine Luft auf Reifen");
 
-        repository.save(rental);
+        repository.save(rental).block();
 
         client.post()
                 .uri("/api/rentals")

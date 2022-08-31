@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,7 +48,7 @@ class CommentApplicationTests {
     @Test
     void shouldCreateOneComment(){
         Comment comment = new Comment("", 1, 1, "Foo", "Der Fahrradverleih ist super!");
-        repository.save(comment);
+        repository.save(comment).block();
 
         client.post()
                 .uri("/api/comments")
@@ -59,6 +61,21 @@ class CommentApplicationTests {
                 .jsonPath("$.commentId").isEqualTo(1)
                 .jsonPath("$.username").isEqualTo("Foo")
                 .jsonPath("$.content").isEqualTo("Der Fahrradverleih ist super!");
+    }
+
+    @Test
+    void shouldDeleteAllCommentsByRentalId(){
+        Comment comment1 = new Comment("", 1, 1, "Foo", "Der Fahrradverleih ist super!");
+        Comment comment2 = new Comment("", 1, 2, "Bar", "Hier leih ich gern.");
+
+        repository.save(comment1).block();
+        repository.save(comment2).block();
+
+        client.delete()
+                .uri("/api/comments/{rentalId}", Collections.singletonMap("rentalId", comment1.getRentalId()))
+                .exchange()
+                .expectStatus().isNoContent();
+
     }
 
 }
