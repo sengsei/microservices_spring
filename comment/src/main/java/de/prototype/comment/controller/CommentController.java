@@ -26,4 +26,12 @@ public class CommentController {
     public Mono<ResponseEntity<CommentDto>> save(@RequestBody Mono<CommentDto> commentDtoMono){
         return commentService.save(commentDtoMono).map(ResponseEntity::ok);
     }
+
+    @DeleteMapping("/{rentalId}")
+    public Mono<ResponseEntity<Object>> delete(@PathVariable("rentalId") int rentalId){
+        return commentService.delete(rentalId)
+                .map(comment -> ResponseEntity.noContent().build())
+                .defaultIfEmpty(ResponseEntity.noContent().build());
+    }
+
 }

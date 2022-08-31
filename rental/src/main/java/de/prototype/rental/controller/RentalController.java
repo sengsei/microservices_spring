@@ -33,8 +33,8 @@ public class RentalController {
     }
 
     @PutMapping("/{rentalId}")
-    public Mono<ResponseEntity<RentalDto>> update(@PathVariable("rentalId") int rentalId, @RequestBody Mono<RentalDto> heroDtoMono) {
-        return rentalService.update(rentalId, heroDtoMono)
+    public Mono<ResponseEntity<RentalDto>> update(@PathVariable("rentalId") int rentalId, @RequestBody Mono<RentalDto> rentalDtoMono) {
+        return rentalService.update(rentalId, rentalDtoMono)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
