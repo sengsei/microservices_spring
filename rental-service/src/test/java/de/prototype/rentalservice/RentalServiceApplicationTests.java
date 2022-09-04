@@ -2,6 +2,7 @@ package de.prototype.rentalservice;
 
 import de.prototype.rentalservice.model.Comment;
 import de.prototype.rentalservice.model.Rental;
+import de.prototype.rentalservice.model.RentalAndComment;
 import de.prototype.rentalservice.service.RentalServiceIntegration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,14 +30,15 @@ class RentalServiceApplicationTests {
     void init() {
 
         when(integration.getRental(1))
-                .thenReturn(Mono.just(new Rental(null, 1, "Trekking Bike", "Reifen platt")));
+                .thenReturn(Mono.just(new Rental(1, "Trekking Bike", "Reifen platt")));
         when(integration.getComments(1))
-                .thenReturn(Flux.fromIterable(singletonList(new Comment(null, 1,1, "Alice", "Alice Content"))));
+                .thenReturn(Flux.fromIterable(singletonList(new Comment(1,1, "Alice", "Alice Content"))));
+
     }
 
     @Test
     void shouldGetRentalById(){
-        Rental rental = new Rental(null,1, "Trekking Bike", "Reifen platt");
+        Rental rental = new Rental(1, "Trekking Bike", "Reifen platt");
 
         client.get().uri("/api/rentals-and-comments/" + rental.getRentalId())
                 .accept(MediaType.APPLICATION_JSON)
@@ -45,6 +47,11 @@ class RentalServiceApplicationTests {
                 .expectBody()
                 .jsonPath("$.rentalId").isEqualTo(rental.getRentalId())
                 .jsonPath("$.comments.length()").isEqualTo(1);
+    }
+
+    @Test
+    void shouldCreateRental(){
+
     }
 
 
