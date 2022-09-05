@@ -13,9 +13,6 @@ import org.springframework.data.annotation.Id;
 @ToString
 public class Comment {
 
-    @Id
-    private String id;
-
     private int rentalId;
     private int commentId;
     private String username;
