@@ -64,4 +64,15 @@ public class RentalServiceIntegration {
     }
 
 
+    public Mono<Rental> deleteRental(int rentalId) {
+        String url = rentalServiceUrl + "/api/rentals/" + rentalId;
+        return client.delete().uri(url).retrieve().bodyToMono(Rental.class);
+    }
+
+    public Mono<Comment> deleteComment(int rentalId){
+        String url = commentServiceUrl + "/api/comments/" + rentalId;
+        return client.delete().uri(url).retrieve().bodyToMono(Comment.class);
+    }
+
+
 }
