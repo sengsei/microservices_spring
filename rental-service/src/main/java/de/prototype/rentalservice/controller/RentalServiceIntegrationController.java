@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,16 @@ public class RentalServiceIntegrationController {
         return Mono.zip(e -> "", monos.toArray(new Mono[0])).then();
     }
 
+    @DeleteMapping("/{rentalId}")
+    public Mono<Tuple2<Rental, Comment>> deleteById(@PathVariable int rentalId){
+           return Mono.zip(
+                   integration.deleteRental(rentalId),
+                   integration.deleteComment(rentalId)
+            );
+    }
+
+
+
 
     private RentalAndComment createRentalAndComment(Rental rental, List<Comment> comments) {
 
@@ -59,4 +70,5 @@ public class RentalServiceIntegrationController {
 
         return new RentalAndComment(rentalId, name, description, commentSummaries);
     }
+
 }
