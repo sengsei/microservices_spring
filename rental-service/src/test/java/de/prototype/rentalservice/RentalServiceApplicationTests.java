@@ -2,7 +2,6 @@ package de.prototype.rentalservice;
 
 import de.prototype.rentalservice.model.Comment;
 import de.prototype.rentalservice.model.Rental;
-import de.prototype.rentalservice.model.RentalAndComment;
 import de.prototype.rentalservice.service.RentalServiceIntegration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RentalServiceApplicationTests {
@@ -32,12 +32,12 @@ class RentalServiceApplicationTests {
         when(integration.getRental(1))
                 .thenReturn(Mono.just(new Rental(1, "Trekking Bike", "Reifen platt")));
         when(integration.getComments(1))
-                .thenReturn(Flux.fromIterable(singletonList(new Comment(1,1, "Alice", "Alice Content"))));
+                .thenReturn(Flux.fromIterable(singletonList(new Comment(1, 1, "Alice", "Alice Content"))));
 
     }
 
     @Test
-    void shouldGetRentalById(){
+    void shouldGetRentalById() {
         Rental rental = new Rental(1, "Trekking Bike", "Reifen platt");
 
         client.get().uri("/api/rentals-and-comments/" + rental.getRentalId())
@@ -49,10 +49,6 @@ class RentalServiceApplicationTests {
                 .jsonPath("$.comments.length()").isEqualTo(1);
     }
 
-    @Test
-    void shouldCreateRental(){
-
-    }
-
-
 }
+
+
