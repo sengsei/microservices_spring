@@ -56,6 +56,11 @@ public class RentalServiceIntegrationController {
             );
     }
 
+    @PutMapping("/{rentalId}")
+    public Mono<Rental> updateById(@PathVariable int rentalId, @RequestBody Rental rental ){
+            return integration.updateRental(rentalId, rental);
+    }
+
 
 
 
