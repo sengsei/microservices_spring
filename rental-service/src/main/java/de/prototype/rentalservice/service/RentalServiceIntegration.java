@@ -74,5 +74,10 @@ public class RentalServiceIntegration {
         return client.delete().uri(url).retrieve().bodyToMono(Comment.class);
     }
 
-
+    public Mono<Rental> updateRental(Rental updateRental) {
+        String url = rentalServiceUrl + "/api/rentals/";
+        return client.post().uri(url)
+                .body(Mono.just(updateRental),Rental.class)
+                .retrieve().bodyToMono(Rental.class);
+    }
 }

@@ -25,19 +25,19 @@ public class RentalServiceIntegrationController {
     @GetMapping("/{rentalId}")
     public Mono<RentalAndComment> getRental(@PathVariable int rentalId) {
         return Mono.zip(
-                        values -> createRentalAndComment((Rental) values[0], (List<Comment>) values[1]),
-                        integration.getRental(rentalId),
-                        integration.getComments(rentalId).collectList());
+                values -> createRentalAndComment((Rental) values[0], (List<Comment>) values[1]),
+                integration.getRental(rentalId),
+                integration.getComments(rentalId).collectList());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Void> createRental(@RequestBody RentalAndComment rentalAndComment){
+    public Mono<Void> createRental(@RequestBody RentalAndComment rentalAndComment) {
         List<Mono> monos = new ArrayList<>();
         Rental rental = new Rental(rentalAndComment.getRentalId(), rentalAndComment.getName(), rentalAndComment.getDescription());
         monos.add(integration.createRental(rental));
 
-        if (rentalAndComment.getComments() != null){
+        if (rentalAndComment.getComments() != null) {
             rentalAndComment.getComments().forEach(
                     com -> {
                         Comment comment = new Comment(rentalAndComment.getRentalId(), com.getCommentId(), com.getUsername(), com.getContent());
@@ -49,14 +49,20 @@ public class RentalServiceIntegrationController {
     }
 
     @DeleteMapping("/{rentalId}")
-    public Mono<Tuple2<Rental, Comment>> deleteById(@PathVariable int rentalId){
-           return Mono.zip(
-                   integration.deleteRental(rentalId),
-                   integration.deleteComment(rentalId)
-            );
+    public Mono<Tuple2<Rental, Comment>> deleteById(@PathVariable int rentalId) {
+        return Mono.zip(
+                integration.deleteRental(rentalId),
+                integration.deleteComment(rentalId)
+        );
     }
 
-
+    @PutMapping("/{rentalId}")
+    public Mono<Tuple2<Rental, Rental>> updateById(@PathVariable int rentalId, @RequestBody Rental rental) {
+        return Mono.zip(
+                integration.deleteRental(rentalId),
+                integration.updateRental(rental)
+        );
+    }
 
 
     private RentalAndComment createRentalAndComment(Rental rental, List<Comment> comments) {
