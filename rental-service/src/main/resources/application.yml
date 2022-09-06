@@ -1,0 +1,21 @@
+server.port: 7000
+
+rental-service:
+  rental:
+    host: localhost
+    port: 7001
+  comment:
+    host: localhost
+    port: 7002
+
+---
+spring.config.activate.on-profile: docker
+server.port: 8080
+
+rental-service:
+  rental:
+    host: rental
+    port: 8080
+  comment:
+    host: comment
+    port: 8080

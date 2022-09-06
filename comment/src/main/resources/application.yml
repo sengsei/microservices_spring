@@ -1,0 +1,22 @@
+server:
+  port: 7002
+
+spring.data.mongodb:
+  host: localhost
+  port: 27017
+  database: comment-db
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  data:
+    mongodb:
+      host: mongodb
+
+server.port: 8080
+
+
+
