@@ -74,16 +74,10 @@ public class RentalServiceIntegration {
         return client.delete().uri(url).retrieve().bodyToMono(Comment.class);
     }
 
-    public Mono<Rental> updateRental(int rentalId, Rental updateRental) {
-        String url = rentalServiceUrl + "/api/rentals/" + rentalId;
-        Mono<Rental> rental = this.getRental(rentalId);
-        rental.map(e -> {
-            e.setName(updateRental.getName());
-            e.setDescription(updateRental.getDescription());
-            return Mono.just(rental);
-        });
-        return client.put().uri(url)
-                .body(Mono.just(rental), Rental.class)
+    public Mono<Rental> updateRental(Rental updateRental) {
+        String url = rentalServiceUrl + "/api/rentals/";
+        return client.post().uri(url)
+                .body(Mono.just(updateRental),Rental.class)
                 .retrieve().bodyToMono(Rental.class);
     }
 }
