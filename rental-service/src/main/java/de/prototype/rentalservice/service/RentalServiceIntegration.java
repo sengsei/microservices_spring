@@ -3,17 +3,13 @@ package de.prototype.rentalservice.service;
 
 import de.prototype.rentalservice.model.Comment;
 import de.prototype.rentalservice.model.Rental;
-import de.prototype.rentalservice.model.RentalAndComment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 
 @Component
 public class RentalServiceIntegration {
@@ -26,11 +22,10 @@ public class RentalServiceIntegration {
     @Autowired
     public RentalServiceIntegration(
 
-            @Value("localhost") String rentalServiceHost,
-            @Value("7001") int rentalServicePort,
-
-            @Value("localhost") String commentServiceHost,
-            @Value("7002") int commentServicePort
+            @Value("${app.rental.host}") String rentalServiceHost,
+            @Value("${app.rental.port}") int rentalServicePort,
+            @Value("${app.comment.host}") String commentServiceHost,
+            @Value("${app.comment.port}") int commentServicePort
 
     ) {
         this.client = WebClient.builder().build();

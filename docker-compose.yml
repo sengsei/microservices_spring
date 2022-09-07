@@ -3,13 +3,13 @@ version: '2.1'
 services:
   rental:
     build: rental
-    mem_limit: 512m    
+    mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       mongodb:
-        condition: service_healthy 
-        
+        condition: service_healthy
+
   comment:
     build: comment
     mem_limit: 512m
@@ -18,15 +18,15 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-  
-  rental-service:
+
+  app:
     build: rental-service
     mem_limit: 512m
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker      
-  
+      - SPRING_PROFILES_ACTIVE=docker
+
   mongodb:
     image: mongo:5.0.9
     mem_limit: 512m

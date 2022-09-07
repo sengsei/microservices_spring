@@ -32,10 +32,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.prototype</groupId>
-            <artifactId>rental</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <version>4.1.80.Final</version>
+            <classifier>osx-aarch_64</classifier>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
