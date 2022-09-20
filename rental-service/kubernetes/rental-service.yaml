@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rental-service
+  name: rental-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rental-service
+  template:
+    metadata:
+      labels:
+        app: rental-service
+    spec:
+      containers:
+        - image: robotron1/rental-service:v1.0
+          name: rental-service
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          resources:
+            requests:
+              memory: "732Mi"
+              cpu: "500m"
+            limits:
+              memory: "732Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rental-service
+spec:
+  selector:
+    app: rental-service
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP

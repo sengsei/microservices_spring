@@ -18,5 +18,10 @@ spring:
 
 server.port: 8080
 
+---
+spring.config.activate.on-profile: prod
+
+spring.data.mongodb.host: 172.17.0.1
+
 
 
