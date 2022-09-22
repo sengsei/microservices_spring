@@ -1,0 +1,27 @@
+server:
+  port: 7001
+
+spring.data.mongodb:
+  host: localhost
+  port: 27017
+  database: rental-db
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  data:
+    mongodb:
+      host: mongodb
+
+server.port: 8080
+
+---
+spring.config.activate.on-profile: prod
+
+spring.data.mongodb.host: 172.17.0.1
+
+
+

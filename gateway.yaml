@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gateway
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - image: robotron1/gateway
+          name: gateway
+          ports:
+            - containerPort: 8443
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "732Mi"
+              cpu: "500m"
+            limits:
+              memory: "732Mi"
+              cpu: "500m"
