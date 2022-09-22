@@ -2,25 +2,25 @@ version: '2.1'
 
 services:
   rental:
-    build: rental
+    image: robotron1/spring_rental:v1.0
     mem_limit: 512m
+    ports:
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      mongodb:
-        condition: service_healthy
+
 
   comment:
-    build: comment
+    image: robotron1/spring_comment:v1.0
     mem_limit: 512m
+    ports:
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      mongodb:
-        condition: service_healthy
+
 
   app:
-    build: rental-service
+    image: robotron1/rental-service:v1.0
     mem_limit: 512m
     ports:
       - "8080:8080"
@@ -33,8 +33,3 @@ services:
     ports:
       - "27017:27017"
     command: mongod
-    healthcheck:
-      test: "mongo --eval 'db.stats().ok'"
-      interval: 5s
-      timeout: 2s
-      retries: 60

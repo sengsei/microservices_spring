@@ -2,24 +2,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: rental-service
-  name: rental-service
+    app: gateway
+  name: gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rental-service
+      app: gateway
   template:
     metadata:
       labels:
-        app: rental-service
+        app: gateway
     spec:
       containers:
-        - image: robotron1/rental-service:v1.0
-          name: rental-service
+        - image: robotron1/gateway
+          name: gateway
+          ports:
+            - containerPort: 8443
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: docker
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "732Mi"
@@ -27,15 +30,3 @@ spec:
             limits:
               memory: "732Mi"
               cpu: "500m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: rental-service
-spec:
-  selector:
-    app: rental-service
-  ports:
-    - port: 80
-      targetPort: 8080
-  type: LoadBalancer
