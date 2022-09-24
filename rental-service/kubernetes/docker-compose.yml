@@ -3,32 +3,38 @@ version: '2.1'
 services:
   rental:
     build: rental
-    #image: robotron1/spring_rental:v1.0
-    mem_limit: 512m    
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-
-
-  comment:
-    build: comment
-    #image: robotron1/spring_comment:v1.0
-    mem_limit: 512m    
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-
-  gateway:
-    build: gateway
-    #image: robotron1/spring-gateway
+    image: robotron1/spring_rental:v1.0
     mem_limit: 512m
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 
-  rental-service:
+
+  comment:
+    build: commen/comment
+    image: robotron1/spring_comment:v1.0
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  gateway:
+    build: gateway
+    image: robotron1/spring-gateway
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  app:
     build: rental-service
-    #image: robotron1/rental-service:v1.0
-    mem_limit: 512m    
+    image: robotron1/rental-service:v1.0
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 

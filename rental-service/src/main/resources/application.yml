@@ -1,6 +1,6 @@
 server.port: 7003
 
-app:
+rental-service:
   rental:
     host: localhost
     port: 7001
@@ -10,8 +10,20 @@ app:
 
 ---
 spring.config.activate.on-profile: docker
-server.port: 80
+server.port: 8080
+
+rental-service:
+  rental:
+    host: rental
+    port: 8080
+  comment:
+    host: comment
+    port: 8080
+  gateway:
+    host: gateway
+    port: 8080
 
 ---
 spring.config.activate.on-profile: prod
+
 
