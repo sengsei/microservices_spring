@@ -9,7 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="comment" />
         <module name="rental-service" />
-        <module name="gateway" />
         <module name="rental" />
       </profile>
     </annotationProcessing>
