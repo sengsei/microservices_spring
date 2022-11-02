@@ -24,6 +24,7 @@ services:
     build: gateway
     image: robotron1/spring-gateway
     mem_limit: 512m
+
     ports:
       - "8080:8080"
     environment:
