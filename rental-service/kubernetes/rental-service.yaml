@@ -13,6 +13,11 @@ spec:
     - name: "8080"
       port: 8080
       targetPort: 8080
+    - name: jmx
+      protocol: TCP
+      port: 9011
+      targetPort: 9011
+  type: LoadBalancer
   selector:
     io.kompose.service: rental
 status:

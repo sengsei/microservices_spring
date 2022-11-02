@@ -27,6 +27,14 @@ spec:
         - env:
             - name: SPRING_PROFILES_ACTIVE
               value: docker
+            - name: JAVA_TOOL_OPTIONS
+              value: -Dcom.sun.management.jmxremote
+                     -Dcom.sun.management.jmxremote.port=9011
+                     -Dcom.sun.management.jmxremote.rmi.port=9011
+                     -Dcom.sun.management.jmxremote.authenticate=false
+                     -Dcom.sun.management.jmxremote.ssl=false
+                     -Dcom.sun.management.jmxremote.local.only=false
+                     -Djava.rmi.server.hostname=127.0.0.1
           image: robotron1/spring_rental:v1.0
           name: rental
           ports:

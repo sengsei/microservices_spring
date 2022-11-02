@@ -13,7 +13,12 @@ spec:
     - name: "8080"
       port: 8080
       targetPort: 8080
+    - name: jmx
+      protocol: TCP
+      port: 9010
+      targetPort: 9010
   type: LoadBalancer
+
   selector:
     io.kompose.service: app
 status:
